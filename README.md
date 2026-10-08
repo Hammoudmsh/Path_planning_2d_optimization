@@ -203,20 +203,3 @@ results_weighted_comparison/<dataset>/full/
 The baseline-only experiment uses `results_weighted_jps/<dataset>/full/`. Additional descriptive CSVs may also be generated.
 
 Use the per-run or per-map files for paired comparisons on matching cases. The supplied configs do not automatically regenerate manuscript Tables I/II or perform the weighted-method significance comparison. Report the datasets and aggregation used; a subset experiment supports conclusions about that subset.
-
-## 8. Record the environment
-
-Keep the experiment JSON, logs, selected data, and package versions with the results:
-
-```bash
-python --version
-python -m pip freeze > requirements_run.txt
-```
-
-For Conda, also save:
-
-```bash
-conda env export > environment_run.yml
-```
-
-The supplied dependency files specify minimum versions rather than a fixed environment. Record the actual versions, particularly SciPy, when reproducing statistical tests.
