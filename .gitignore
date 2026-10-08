@@ -1,0 +1,7 @@
+# Python caches and compiled files
+__pycache__/
+*.py[cod]
+
+# Jupyter notebooks and checkpoints
+*.ipynb
+.ipynb_checkpoints/

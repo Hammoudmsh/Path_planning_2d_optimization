@@ -1,0 +1,3 @@
+# Slurm and shell scripts must retain Unix line endings on every platform.
+*.slurm text eol=lf
+*.sh text eol=lf

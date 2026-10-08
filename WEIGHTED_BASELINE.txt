@@ -1,0 +1,53 @@
+Run from your server project directory (the directory containing datasets/):
+  python run_benchmark.py bg512
+or:
+  mkdir -p logs
+  sbatch run_job.slurm bg512
+Repeat for street, dao, wc3maps512, bgmaps, sc1, maze, random.
+
+PAIRED COMPARISON ON ONE OR A FEW DATASETS:
+  python run_benchmark.py dao --config-json exp_weighted_comparison.json
+  sbatch run_job.slurm dao full exp_weighted_comparison.json
+This separate config runs only Weighted JPS (no penalty, w=1.15) and
+Fast Weighted SA-JPS (lambda=0.35, w=1.15) on the same selected scenarios.
+Results go to results_weighted_comparison/<dataset>/full/. Repeat the command
+to resume; each method is committed separately, even within a scenario.
+Submit only the datasets you can evaluate. Report their names and coverage;
+a subset comparison does not establish the result for all eight datasets.
+The original exp_config.json still runs only the Weighted JPS baseline.
+
+The default exp_config.json runs only Weighted JPS: Standard JPS with w=1.15,
+no turn penalty (lambda=0), and smooth_tie_break=false. It does not run A*,
+FW-SA-JPS or parameter sweeps. Unused SA settings in the inherited profile do
+not affect this algorithm. The JSON base_profile=full keeps the original
+uniform selection of up to 200 scenarios per map. --dry-run prints settings.
+
+Outputs: results_weighted_jps/<dataset>/full/
+  per_run_results_<dataset>.csv
+  per_map_summary_<dataset>.csv
+  summary_results_<dataset>.csv
+The original result schemas are retained for table aggregation.
+
+RESUME: repeat the SAME command from the SAME working directory.
+Each completed search is committed to a SQLite journal in cache/; committed
+searches are skipped. Only an interrupted, uncommitted search may repeat.
+Completed benchmarks load the existing final cache. This is resume on restart,
+not automatic Slurm resubmission. Keep cache/ and original dataset files.
+Do not launch concurrent jobs for the same dataset/output directory.
+Changed input file timestamps, selection or algorithm settings use a separate
+cache identity. Compatible legacy pickle checkpoints are imported automatically.
+An old interrupted run that never saved a checkpoint cannot be recovered.
+
+A* references: set astar_reference_root in exp_config.json to your ORIGINAL
+results root (default: results_new_ablation). It must contain:
+  <dataset>/full/per_run_results_<dataset>.csv
+References match by map, original scenario index and start/goal coordinates.
+Missing matches stay unavailable; .scen lengths are not substituted for A*.
+References refresh on cached runs too: fix the root and rerun without searches.
+
+For Tables I/II, combine the new per-map summaries with existing methods on
+identical map/scenario coverage and use the original table aggregation.
+This experiment uses conventional Weighted JPS, not the SA-JPS implementation
+with its penalty disabled. State this implementation distinction in the paper.
+
+Validation: python -m unittest test_weighted_resume.py

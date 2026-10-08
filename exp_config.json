@@ -1,0 +1,29 @@
+{
+  "base_profile": "full",
+  "output_root": "results_weighted_jps",
+  "overrides": {
+    "benchmark_approaches": [
+      {
+        "label": "Weighted JPS",
+        "algorithm": "Standard JPS",
+        "parameters": {
+          "heuristic_weight": 1.15,
+          "smooth_tie_break": false
+        }
+      }
+    ],
+    "run_smoke_test": false,
+    "run_ablation_study": false,
+    "run_sa_weight_sweep": false,
+    "run_statistical_analysis": false,
+    "save_bar_plots": false,
+    "save_per_map_plots": false,
+    "save_example_plot": false,
+    "use_benchmark_cache": true,
+    "force_recompute_benchmark": false,
+    "run_main_benchmark": true,
+    "run_structural_clustering": false,
+    "create_zip_archive": false,
+    "astar_reference_root": "results_new_ablation"
+  }
+}
